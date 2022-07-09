@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            /* align-items: center; */
+            /* align-content: center; */
+            
+        }
+        .login{
+            padding: 5rem;
+            background-color: rgb(59, 56, 56);
+            margin-top: 15%;
+            display: flexbox;
+        }
+        button{
+            border-radius: 0;
+            padding-left: 0.2rem;
+            background-color: white;
+        }
+        .title{
+            color: white;
+            margin-bottom: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+    <form class="login">
+        <h2 class="title">Change password</h2>
+        <input type="password" class="password" placeholder="Passwords">
+        <button class="submit">Change</button>
+    </form>
+</body>
+<script>
+    const form=document.querySelector('.submit');
+    form.addEventListener('click',async (e)=>{
+        event.preventDefault();
+        const password=document.querySelector('.password').value;
+
+    const result= await fetch('/api/change',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                newpassword:password,
+                token:localStorage.getItem('token')
+            })
+        })
+        .then((res)=>res.json())
+        console.log(result);
+        if(result.status==='ok'){
+            console.log('data recived: ',result.data);
+            alert('login successful');
+        }else{
+            alert(result.error);
+        }
+    })
+</script>
+</html>
